@@ -1,8 +1,5 @@
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -25,7 +22,7 @@ public class GreetServer implements Runnable{
                 Socket connectionSocket = serverSocket.accept();
                 System.out.println(" THE CLIENT" + " " + connectionSocket.getInetAddress()
                     + ":" + connectionSocket.getPort() + " IS CONNECTED ");
-                new Thread(new GreetServerOperator(connectionSocket)).start();
+                new Thread(new ClientMessageHandler(connectionSocket)).start();
             } catch (IOException ex) {
                 System.err.println("Server aborted:" + ex);
             }

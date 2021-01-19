@@ -6,13 +6,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
-public class GreetServerOperator implements Runnable{
+public class ClientMessageHandler implements Runnable{
 
     Socket connectionSocket;
     BufferedReader reader;
     BufferedWriter writer;
 
-    public GreetServerOperator(Socket connectionSocket) {
+    public ClientMessageHandler(Socket connectionSocket) {
         this.connectionSocket = connectionSocket;
 
         try {
