@@ -1,5 +1,6 @@
 # vs code
 .vscode
+lib
 
 # Compiled class file
 *.class
