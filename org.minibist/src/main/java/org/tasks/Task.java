@@ -1,10 +1,13 @@
 package org.tasks;
 
+import com.google.gson.JsonObject;
+
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@Builder
+@RequiredArgsConstructor
 public class Task {
     
     private String operation;
