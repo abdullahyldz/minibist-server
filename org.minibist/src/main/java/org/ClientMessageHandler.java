@@ -7,14 +7,22 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 
+import com.google.gson.Gson;
+
+import org.tasks.SignupTask;
+import org.tasks.Task;
+import org.tasks.TaskHandler;
+
 public class ClientMessageHandler implements Runnable{
 
     Socket connectionSocket;
     BufferedReader reader;
     BufferedWriter writer;
+    Gson gson;
 
     public ClientMessageHandler(Socket connectionSocket) {
         this.connectionSocket = connectionSocket;
+        this.gson = new Gson();
 
         try {
             reader = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
@@ -25,12 +33,12 @@ public class ClientMessageHandler implements Runnable{
     }
 
     public void run() {
-        String request = null;
+        String clientRequest = null;
         try {
-            request = reader.readLine();
-            System.out.println(request);
-            String response = "server: server responded";
-            sendReply(response);
+            clientRequest = reader.readLine();
+            String serverResponse = TaskHandler.handleMessage(gson, clientRequest);
+
+            sendReply(serverResponse);
         } catch (IOException e) {
             e.printStackTrace();
         }
