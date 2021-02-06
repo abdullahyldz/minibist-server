@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-public class GreetServer implements Runnable{
+public class ServerInitializer implements Runnable {
     private ServerSocket serverSocket;
 
-    public GreetServer(int port) {
+    public ServerInitializer(int port) {
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("TCP server waiting for client on port " + port);
@@ -21,8 +21,8 @@ public class GreetServer implements Runnable{
         while (true) {
             try {
                 Socket connectionSocket = serverSocket.accept();
-                System.out.println(" THE CLIENT" + " " + connectionSocket.getInetAddress()
-                    + ":" + connectionSocket.getPort() + " IS CONNECTED ");
+                System.out.println(" THE CLIENT" + " " + connectionSocket.getInetAddress() + ":"
+                        + connectionSocket.getPort() + " IS CONNECTED ");
                 new Thread(new ClientMessageHandler(connectionSocket)).start();
             } catch (IOException ex) {
                 System.err.println("Server aborted:" + ex);

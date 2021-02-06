@@ -9,6 +9,7 @@ public final class App {
 
     /**
      * Says hello to the world.
+     * 
      * @param args The arguments of the program.
      */
     public static void main(String args[]) throws Exception {
@@ -17,8 +18,8 @@ public final class App {
         startConnection();
     }
 
-    public static void startConnection(){
-        GreetServer greetServer = new GreetServer(6666);
+    public static void startConnection() {
+        ServerInitializer greetServer = new ServerInitializer(6666);
         Thread thread = new Thread(greetServer);
         thread.start();
     }
