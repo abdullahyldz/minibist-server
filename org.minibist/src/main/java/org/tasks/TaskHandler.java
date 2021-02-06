@@ -1,18 +1,24 @@
 package org.tasks;
 
-import java.io.InputStreamReader;
-
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.stream.JsonReader;
-
 import org.Response;
-
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class TaskHandler {
+
+    private static final String success = "success";
+    private static final String failure = "failure";
+    private static final String invalid = "invalid";
+    private static final String loginSuccessMsg = "completed login";
+    private static final String signupSuccessMsg = "completed signup";
+    private static final String buySuccessMsg = "completed buy operation";
+    private static final String sellSuccessMsg = "completed sell operation";
+
+    private static final String loginFailureMsg = "Please check your credentials";
+    private static final String signupFailureMsg = "completed login";
+    private static final String buyFailureMsg = "completed login";
+    private static final String sellFailureMsg = "completed login";
 
     public static String handleMessage(Gson gson, String msg) {
         System.out.println(msg);
@@ -20,25 +26,38 @@ public class TaskHandler {
         Response response = null;
 
         if (task.getOperation() == null || task.getMessage() == null) {
-            System.out.println("Invalid operation");
+            System.out.println(invalid);
         } else if (task.getOperation().equals("signup")) {
             SignupTask signupTask = gson.fromJson(task.getMessage(), SignupTask.class);
-            response = Response.builder().status("success").message("completed signup").build();
+            if (signupTask.execute()) {
+                response = Response.builder().status(success).message(signupSuccessMsg).build();
+            } else {
+                response = Response.builder().status(success).message(signupFailureMsg).build();
+            }
         } else if (task.getOperation().equals("login")) {
             LoginTask loginTask = gson.fromJson(task.getMessage(), LoginTask.class);
-            // response = Response.builder().status("failure").message("Please check your
-            // credentials").build();
-            response = Response.builder().status("success").message("completed login").build();
-
+            if (loginTask.execute()) {
+                response = Response.builder().status(success).message(loginSuccessMsg).build();
+            } else {
+                response = Response.builder().status(failure).message(loginFailureMsg).build();
+            }
         } else if (task.getOperation().equals("buy")) {
             BuyTask buyTask = gson.fromJson(task.getMessage(), BuyTask.class);
-            response = Response.builder().status("success").message("completed buy operation").build();
+            if (buyTask.execute()) {
+                response = Response.builder().status(success).message(buySuccessMsg).build();
+            } else {
+                response = Response.builder().status(success).message(buyFailureMsg).build();
+            }
         } else if (task.getOperation().equals("sell")) {
             SellTask sellTask = gson.fromJson(task.getMessage(), SellTask.class);
-            response = Response.builder().status("success").message("completed sell").build();
+            if (sellTask.execute()) {
+                response = Response.builder().status(success).message(sellSuccessMsg).build();
+            } else {
+                response = Response.builder().status(success).message(sellFailureMsg).build();
+            }
         } else {
             System.out.println("Operation not valid.");
-            response = Response.builder().status("failure").message("Invalid operation").build();
+            response = Response.builder().status(failure).message(invalid).build();
         }
         return gson.toJson(response);
     }

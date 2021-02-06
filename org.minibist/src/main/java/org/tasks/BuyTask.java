@@ -1,7 +1,5 @@
 package org.tasks;
 
-import lombok.Builder;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -20,4 +18,15 @@ public class BuyTask {
         this.price = price;
     }
 
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
+    }
+
+    public boolean execute() {
+        return true;
+    }
 }

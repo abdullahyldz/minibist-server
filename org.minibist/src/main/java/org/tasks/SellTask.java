@@ -17,4 +17,8 @@ public class SellTask {
         this.userId = userId;
         this.price = price;
     }
+
+    public boolean execute() {
+        return true;
+    }
 }
