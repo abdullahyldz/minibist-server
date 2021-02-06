@@ -33,7 +33,9 @@ public class TaskHandler {
                 response = Response.builder().status(success).message(signupSuccessMsg).build();
             } else {
                 response = Response.builder().status(failure)
-                        .message(signupTask.getErrorMessage() != "" ? signupTask.getErrorMessage() : signupFailureMsg)
+                        .message(signupTask.getErrorMessage() != null && signupTask.getErrorMessage() != ""
+                                ? signupTask.getErrorMessage()
+                                : signupFailureMsg)
                         .build();
             }
         } else if (task.getOperation().equals("login")) {
@@ -42,7 +44,9 @@ public class TaskHandler {
                 response = Response.builder().status(success).message(loginSuccessMsg).build();
             } else {
                 response = Response.builder().status(failure)
-                        .message(loginTask.getErrorMessage() != "" ? loginTask.getErrorMessage() : loginFailureMsg)
+                        .message(loginTask.getErrorMessage() != null && loginTask.getErrorMessage() != ""
+                                ? loginTask.getErrorMessage()
+                                : loginFailureMsg)
                         .build();
             }
         } else if (task.getOperation().equals("buy")) {
@@ -51,7 +55,10 @@ public class TaskHandler {
                 response = Response.builder().status(success).message(buySuccessMsg).build();
             } else {
                 response = Response.builder().status(failure)
-                        .message(buyTask.getErrorMessage() != "" ? buyTask.getErrorMessage() : buyFailureMsg).build();
+                        .message(buyTask.getErrorMessage() != null && buyTask.getErrorMessage() != ""
+                                ? buyTask.getErrorMessage()
+                                : buyFailureMsg)
+                        .build();
             }
         } else if (task.getOperation().equals("sell")) {
             SellTask sellTask = gson.fromJson(task.getMessage(), SellTask.class);

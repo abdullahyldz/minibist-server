@@ -20,6 +20,7 @@ public class LoginTask {
     public LoginTask(String email, String password) {
         this.email = email;
         this.password = password;
+        this.errorMessage = "";
     }
 
     public boolean execute() {
