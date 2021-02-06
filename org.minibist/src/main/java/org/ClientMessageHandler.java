@@ -13,7 +13,7 @@ import org.tasks.SignupTask;
 import org.tasks.Task;
 import org.tasks.TaskHandler;
 
-public class ClientMessageHandler implements Runnable{
+public class ClientMessageHandler implements Runnable {
 
     Socket connectionSocket;
     BufferedReader reader;
@@ -37,7 +37,6 @@ public class ClientMessageHandler implements Runnable{
         try {
             clientRequest = reader.readLine();
             String serverResponse = TaskHandler.handleMessage(gson, clientRequest);
-
             sendReply(serverResponse);
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,6 +50,7 @@ public class ClientMessageHandler implements Runnable{
             e.printStackTrace();
         }
     }
+
     public void sendReply(String response) {
 
         try {
