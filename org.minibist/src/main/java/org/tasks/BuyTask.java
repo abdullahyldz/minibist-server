@@ -5,6 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import com.google.gson.JsonArray;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -39,12 +42,12 @@ public class BuyTask {
         this.stockName = stockName;
     }
 
-    private void saveAccounts(JSONArray accounts) {
-        if (accounts == null) {
-            accounts = new JSONArray();
+    private void savePortfolios() {
+        if (portfolios == null) {
+            portfolios = new JSONArray();
         }
         try (FileWriter file = new FileWriter("portfolio.json")) {
-            file.write(accounts.toJSONString());
+            file.write(portfolios.toJSONString());
             file.flush();
         } catch (IOException e2) {
             e2.printStackTrace();
@@ -54,6 +57,9 @@ public class BuyTask {
     public boolean execute() {
 
         JSONObject obj = null;
+        if (portfolios == null) {
+            portfolios = new JSONArray();
+        }
 
         try (FileReader reader = new FileReader("portfolio.json")) {
             // Read JSON file
@@ -67,6 +73,8 @@ public class BuyTask {
                     Integer money = Integer.parseInt((String) obj.get("money"));
                     if (isValid(money, this.price * this.amount)) {
                         obj.put("money", Integer.toString(money - this.price * this.amount));
+                        savePortfolios();
+                        return true;
                     } else {
                         this.errorMessage = "Not sufficient money";
                         return false;
@@ -74,50 +82,22 @@ public class BuyTask {
                 }
             }
         } catch (FileNotFoundException e) {
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } catch (ParseException e) {
-            e.printStackTrace();
-            return false;
-        }
-        initializeAccount();
-
-        initializeAccount();
-
-        obj = new JSONObject();
-        obj.put("email", this.email);
-        if (isValid(100, this.price * this.amount)) {
-            obj.put("money", Integer.toString(100 - this.price * this.amount));
-            portfolios.add(obj);
-            saveAccounts(portfolios);
-            return true;
-        } else {
-            obj.put("money", "100");
-            portfolios.add(obj);
-            saveAccounts(portfolios);
-            this.errorMessage = "Not sufficient money";
+            try (FileWriter file = new FileWriter("portfolio.json")) {
+                JSONArray accounts = new JSONArray();
+                JSONObject newAccount = new JSONObject();
+                newAccount.put("email", this.email);
+                newAccount.put("money", "100");
+                accounts.add(newAccount);
+                this.errorMessage = "A problem has occurred. Please try again";
+                file.write(accounts.toJSONString());
+                file.flush();
+            } catch (IOException e2) {
+                e2.printStackTrace();
+            }
+        } catch (Exception e) {
             return false;
         }
-
-        return true;
-    }
-
-    private void initializeAccount() {
-        if (portfolios == null) {
-            portfolios = new JSONArray();
-        }
-        JSONObject obj = new JSONObject();
-        obj = new JSONObject();
-        obj.put("email", this.email);
-        obj.put("money", "100");
-        portfolios.add(obj);
-        try (FileWriter file = new FileWriter("accounts.json")) {
-            file.write(portfolios.toJSONString());
-            file.flush();
-        } catch (IOException e2) {
-            e2.printStackTrace();
-        }
+        return false;
     }
 
     private boolean isValid(Integer money, Integer excess) {
