@@ -26,9 +26,9 @@ public class TaskHandler {
             response = Response.builder().status("success").message("completed signup").build();
         } else if (task.getOperation().equals("login")) {
             LoginTask loginTask = gson.fromJson(task.getMessage(), LoginTask.class);
-            response = Response.builder().status("failure").message("Please check your credentials").build();
-            // response = Response.builder().status("success").message("completed
-            // login").build();
+            // response = Response.builder().status("failure").message("Please check your
+            // credentials").build();
+            response = Response.builder().status("success").message("completed login").build();
 
         } else if (task.getOperation().equals("buy")) {
             BuyTask buyTask = gson.fromJson(task.getMessage(), BuyTask.class);
