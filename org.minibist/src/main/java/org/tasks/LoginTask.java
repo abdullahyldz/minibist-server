@@ -15,6 +15,7 @@ public class LoginTask {
 
     private String email;
     private String password;
+    private String errorMessage = "";
 
     public LoginTask(String email, String password) {
         this.email = email;
@@ -36,8 +37,10 @@ public class LoginTask {
                 obj = (JSONObject) account;
                 if (obj.get("email").equals(this.email)) {
                     if (obj.get("password").equals(this.password)) {
+                        this.errorMessage = "";
                         return true;
                     } else {
+                        this.errorMessage = "Please check your credentials.";
                         return false;
                     }
                 }
@@ -63,8 +66,5 @@ public class LoginTask {
             e.printStackTrace();
         }
         return true;
-    }
-
-    private boolean isAuthorized() {
     }
 }
