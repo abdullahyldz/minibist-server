@@ -59,7 +59,6 @@ public class SignupTask {
                 }
             }
             accounts.add(newAccount);
-            return true;
         } catch (FileNotFoundException e) {
             JSONArray initialAccounts = new JSONArray();
             try (FileWriter file = new FileWriter("accounts.json")) {
