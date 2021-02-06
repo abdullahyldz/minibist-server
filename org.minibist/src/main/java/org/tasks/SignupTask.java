@@ -23,6 +23,7 @@ public class SignupTask {
     // JSON parser object to parse read file
     private JSONParser jsonParser = new JSONParser();
     private JSONArray accounts = null;
+    private JSONArray portfolios = null;
 
     public SignupTask(String email, String password, String firstName, String lastName) {
         this.email = email;
@@ -67,14 +68,45 @@ public class SignupTask {
         }
         // Could not find account in db
         initializeAccount();
+        initializePortfolio();
         // saveAccounts(accounts);
         return true;
+    }
+
+    private void initializePortfolio() {
+        if (portfolios == null) {
+            portfolios = new JSONArray();
+        }
+
+        JSONObject obj = new JSONObject();
+        obj.put("email", this.email);
+        obj.put("money", "100");
+
+        try (FileReader reader = new FileReader("portfolio.json")) {
+            // Read JSON file
+            portfolios = (JSONArray) jsonParser.parse(reader);
+        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        portfolios.add(obj);
+        try (FileWriter file = new FileWriter("portfolio.json")) {
+            file.write(portfolios.toJSONString());
+            file.flush();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
     }
 
     private void initializeAccount() {
         if (accounts == null) {
             accounts = new JSONArray();
         }
+
         JSONObject newAccount = new JSONObject();
         newAccount.put("email", this.email);
         newAccount.put("password", this.password);
