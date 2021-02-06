@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+@RequiredArgsConstructor
 public class SignupTask {
 
     private final String operation = "signup";
@@ -19,11 +20,16 @@ public class SignupTask {
     private String lastName;
     private String errorMessage = "";
 
+    // JSON parser object to parse read file
+    private JSONParser jsonParser = new JSONParser();
+    private JSONArray accounts = null;
+
     public SignupTask(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.jsonParser = new JSONParser();
     }
 
     private void saveAccounts(JSONArray accounts) {
@@ -39,20 +45,10 @@ public class SignupTask {
     }
 
     public boolean execute() {
-
-        // JSON parser object to parse read file
-        JSONParser jsonParser = new JSONParser();
-        JSONArray accounts = null;
-        JSONObject newAccount = new JSONObject();
-        newAccount.put("email", this.email);
-        newAccount.put("password", this.password);
-        newAccount.put("fullname", this.firstName + " " + this.lastName);
-
         try (FileReader reader = new FileReader("accounts.json")) {
             // Read JSON file
             accounts = (JSONArray) jsonParser.parse(reader);
             JSONObject obj;
-
             System.out.println(accounts);
             for (Object account : accounts) {
                 obj = (JSONObject) account;
@@ -61,27 +57,38 @@ public class SignupTask {
                     return false;
                 }
             }
-            accounts.add(newAccount);
         } catch (FileNotFoundException e) {
-            JSONArray initialAccounts = new JSONArray();
-            try (FileWriter file = new FileWriter("accounts.json")) {
-                JSONObject initializerObject = new JSONObject();
-                initializerObject.put("email", "asdasd@a.com");
-                initializerObject.put("password", "asdasd");
-                initializerObject.put("fullname", "test account");
-                initialAccounts.add(initializerObject);
-                file.write(initialAccounts.toJSONString());
-                file.flush();
-            } catch (IOException e2) {
-                e2.printStackTrace();
-            }
-            execute();
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         } catch (ParseException e) {
             e.printStackTrace();
+            return false;
         }
-        saveAccounts(accounts);
+        // Could not find account in db
+        initializeAccount();
+        // saveAccounts(accounts);
         return true;
+    }
+
+    private void initializeAccount() {
+        if (accounts == null) {
+            accounts = new JSONArray();
+        }
+        JSONObject newAccount = new JSONObject();
+        newAccount.put("email", this.email);
+        newAccount.put("password", this.password);
+        newAccount.put("fullname", this.firstName + " " + this.lastName);
+        accounts.add(newAccount);
+        try (FileWriter file = new FileWriter("accounts.json")) {
+            file.write(accounts.toJSONString());
+            file.flush();
+        } catch (IOException e2) {
+            e2.printStackTrace();
+        }
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

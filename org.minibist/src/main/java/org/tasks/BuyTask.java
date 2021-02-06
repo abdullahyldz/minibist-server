@@ -23,7 +23,7 @@ public class BuyTask {
     public BuyTask(String stockName, Integer amount, String email, Integer price) {
         this.stockName = stockName;
         this.amount = amount;
-        this.email = userId;
+        this.email = email;
         this.price = price;
     }
 
@@ -68,6 +68,7 @@ public class BuyTask {
                         saveAccounts(portfolios);
                         return true;
                     } else {
+                        this.errorMessage = "Not sufficient money";
                         return false;
                     }
                 }
@@ -80,9 +81,10 @@ public class BuyTask {
                 saveAccounts(portfolios);
                 return true;
             } else {
-                obj.put("money", 100);
+                obj.put("money", "100");
                 portfolios.add(obj);
                 saveAccounts(portfolios);
+                this.errorMessage = "Not sufficient money";
                 return false;
             }
         } catch (FileNotFoundException e) {
@@ -114,5 +116,9 @@ public class BuyTask {
 
     private boolean isValid(Integer money, Integer excess) {
         return money >= excess;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 }

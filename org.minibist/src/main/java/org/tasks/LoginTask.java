@@ -67,4 +67,8 @@ public class LoginTask {
         }
         return true;
     }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }
