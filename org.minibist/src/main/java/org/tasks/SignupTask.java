@@ -15,13 +15,15 @@ public class SignupTask {
     private final String operation = "signup";
     private String email;
     private String password;
-    private String name;
+    private String firstName;
+    private String lastName;
     private String errorMessage = "";
 
-    public SignupTask(String email, String password, String name) {
+    public SignupTask(String email, String password, String firstName, String lastName) {
         this.email = email;
         this.password = password;
-        this.name = name;
+        this.firstName = firstName;
+        this.lastName = lastName;
     }
 
     private void saveAccounts(JSONArray accounts) {
@@ -44,6 +46,7 @@ public class SignupTask {
         JSONObject newAccount = new JSONObject();
         newAccount.put("email", this.email);
         newAccount.put("password", this.password);
+        newAccount.put("fullname", this.firstName + " " + this.lastName);
 
         try (FileReader reader = new FileReader("accounts.json")) {
             // Read JSON file
@@ -65,6 +68,7 @@ public class SignupTask {
                 JSONObject initializerObject = new JSONObject();
                 initializerObject.put("email", "asdasd@a.com");
                 initializerObject.put("password", "asdasd");
+                initializerObject.put("fullname", "test account");
                 initialAccounts.add(initializerObject);
                 file.write(initialAccounts.toJSONString());
                 file.flush();
