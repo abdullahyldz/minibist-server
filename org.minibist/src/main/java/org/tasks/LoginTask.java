@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import org.json.simple.JSONArray;
@@ -20,9 +21,13 @@ public class LoginTask {
     private String password;
     private String errorMessage = "";
     @Setter
-    public static ReadWriteLock accountLock;
+    private static Lock accountReadLock;
     @Setter
-    public static ReadWriteLock portfolioLock;
+    private static Lock accountWriteLock;
+    @Setter
+    private static Lock portfolioReadLock;
+    @Setter
+    private static Lock portfolioWriteLock;
 
     public LoginTask(String email, String password) {
         this.email = email;
@@ -34,7 +39,7 @@ public class LoginTask {
 
         // JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
-
+        accountReadLock.lock();
         try (FileReader reader = new FileReader("accounts.json")) {
             // Read JSON file
             JSONArray accounts = (JSONArray) jsonParser.parse(reader);
@@ -69,6 +74,8 @@ public class LoginTask {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } finally {
+            accountReadLock.unlock();
         }
         return true;
     }

@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import org.json.simple.JSONArray;
@@ -24,9 +25,13 @@ public class SignupTask {
     private String lastName;
     private String errorMessage = "";
     @Setter
-    public static ReadWriteLock accountLock;
+    private static Lock accountReadLock;
     @Setter
-    public static ReadWriteLock portfolioLock;
+    private static Lock accountWriteLock;
+    @Setter
+    private static Lock portfolioReadLock;
+    @Setter
+    private static Lock portfolioWriteLock;
 
     // JSON parser object to parse read file
     private JSONParser jsonParser = new JSONParser();
@@ -45,15 +50,19 @@ public class SignupTask {
         if (accounts == null) {
             accounts = new JSONArray();
         }
+        accountWriteLock.lock();
         try (FileWriter file = new FileWriter("accounts.json")) {
             file.write(accounts.toJSONString());
             file.flush();
         } catch (IOException e2) {
             e2.printStackTrace();
+        } finally {
+            accountWriteLock.unlock();
         }
     }
 
     public boolean execute() {
+        accountReadLock.lock();
         try (FileReader reader = new FileReader("accounts.json")) {
             // Read JSON file
             accounts = (JSONArray) jsonParser.parse(reader);
@@ -73,6 +82,8 @@ public class SignupTask {
         } catch (ParseException e) {
             e.printStackTrace();
             return false;
+        } finally {
+            accountReadLock.unlock();
         }
         // Could not find account in db
         initializeAccount();
@@ -88,10 +99,11 @@ public class SignupTask {
 
         JSONObject obj = new JSONObject();
         obj.put("email", this.email);
-        obj.put("money", "100");
+        obj.put("money", 100);
         JSONArray arr = new JSONArray();
         obj.put("stocks", arr);
 
+        accountReadLock.lock();
         try (FileReader reader = new FileReader("portfolio.json")) {
             // Read JSON file
             portfolios = (JSONArray) jsonParser.parse(reader);
@@ -102,13 +114,19 @@ public class SignupTask {
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+        } finally {
+            accountReadLock.unlock();
         }
         portfolios.add(obj);
+
+        accountWriteLock.lock();
         try (FileWriter file = new FileWriter("portfolio.json")) {
             file.write(portfolios.toJSONString());
             file.flush();
         } catch (IOException e2) {
             e2.printStackTrace();
+        } finally {
+            accountWriteLock.unlock();
         }
     }
 
@@ -122,11 +140,15 @@ public class SignupTask {
         newAccount.put("password", this.password);
         newAccount.put("fullname", this.firstName + " " + this.lastName);
         accounts.add(newAccount);
+
+        accountWriteLock.lock();
         try (FileWriter file = new FileWriter("accounts.json")) {
             file.write(accounts.toJSONString());
             file.flush();
         } catch (IOException e2) {
             e2.printStackTrace();
+        } finally {
+            accountWriteLock.unlock();
         }
     }
 

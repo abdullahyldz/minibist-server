@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 
 import com.google.gson.JsonArray;
@@ -27,9 +28,13 @@ public class BuyTask {
     private Integer price;
     private String errorMessage = "";
     @Setter
-    public static ReadWriteLock accountLock;
+    private static Lock accountReadLock;
     @Setter
-    public static ReadWriteLock portfolioLock;
+    private static Lock accountWriteLock;
+    @Setter
+    private static Lock portfolioReadLock;
+    @Setter
+    private static Lock portfolioWriteLock;
 
     // JSON parser object to parse read file
     JSONParser jsonParser = new JSONParser();
@@ -55,11 +60,16 @@ public class BuyTask {
         if (portfolios == null) {
             portfolios = new JSONArray();
         }
+        portfolioReadLock.unlock();
+        portfolioWriteLock.lock();
         try (FileWriter file = new FileWriter("portfolio.json")) {
             file.write(portfolios.toJSONString());
             file.flush();
         } catch (IOException e2) {
             e2.printStackTrace();
+        } finally {
+            portfolioWriteLock.unlock();
+            portfolioReadLock.lock();
         }
     }
 
@@ -69,7 +79,7 @@ public class BuyTask {
         if (portfolios == null) {
             portfolios = new JSONArray();
         }
-
+        portfolioReadLock.lock();
         try (FileReader reader = new FileReader("portfolio.json")) {
             // Read JSON file
             portfolios = (JSONArray) jsonParser.parse(reader);
@@ -111,6 +121,8 @@ public class BuyTask {
                 }
             }
         } catch (FileNotFoundException e) {
+            portfolioReadLock.unlock();
+            portfolioWriteLock.lock();
             try (FileWriter file = new FileWriter("portfolio.json")) {
                 JSONArray accounts = new JSONArray();
                 JSONObject newAccount = new JSONObject();
@@ -123,9 +135,13 @@ public class BuyTask {
                 file.flush();
             } catch (IOException e2) {
                 e2.printStackTrace();
+            } finally {
+                portfolioWriteLock.unlock();
             }
         } catch (Exception e) {
             return false;
+        } finally {
+            portfolioReadLock.unlock();
         }
         return false;
     }

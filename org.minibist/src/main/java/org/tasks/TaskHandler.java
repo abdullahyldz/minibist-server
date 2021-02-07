@@ -34,8 +34,11 @@ public class TaskHandler {
             System.out.println(invalid);
         } else if (task.getOperation().equals("signup")) {
             SignupTask signupTask = gson.fromJson(task.getMessage(), SignupTask.class);
-            signupTask.setAccountLock(accountLock);
-            signupTask.setPortfolioLock(portfolioLock);
+            signupTask.setAccountReadLock(accountLock.readLock());
+            signupTask.setAccountWriteLock(accountLock.writeLock());
+            signupTask.setPortfolioReadLock(portfolioLock.readLock());
+            signupTask.setPortfolioReadLock(portfolioLock.writeLock());
+
             if (signupTask.execute()) {
                 response = Response.builder().status(success).message(signupSuccessMsg).build();
             } else {
@@ -47,8 +50,10 @@ public class TaskHandler {
             }
         } else if (task.getOperation().equals("login")) {
             LoginTask loginTask = gson.fromJson(task.getMessage(), LoginTask.class);
-            loginTask.setAccountLock(accountLock);
-            loginTask.setPortfolioLock(portfolioLock);
+            loginTask.setAccountReadLock(accountLock.readLock());
+            loginTask.setAccountWriteLock(accountLock.writeLock());
+            loginTask.setPortfolioReadLock(portfolioLock.readLock());
+            loginTask.setPortfolioReadLock(portfolioLock.writeLock());
             if (loginTask.execute()) {
                 response = Response.builder().status(success).message(loginSuccessMsg).build();
             } else {
@@ -60,8 +65,10 @@ public class TaskHandler {
             }
         } else if (task.getOperation().equals("buy")) {
             BuyTask buyTask = gson.fromJson(task.getMessage(), BuyTask.class);
-            buyTask.setAccountLock(accountLock);
-            buyTask.setPortfolioLock(portfolioLock);
+            buyTask.setAccountReadLock(accountLock.readLock());
+            buyTask.setAccountWriteLock(accountLock.writeLock());
+            buyTask.setPortfolioReadLock(portfolioLock.readLock());
+            buyTask.setPortfolioWriteLock(portfolioLock.writeLock());
             if (buyTask.execute()) {
                 response = Response.builder().status(success).message(buySuccessMsg).build();
             } else {
@@ -73,8 +80,10 @@ public class TaskHandler {
             }
         } else if (task.getOperation().equals("sell")) {
             SellTask sellTask = gson.fromJson(task.getMessage(), SellTask.class);
-            sellTask.setAccountLock(accountLock);
-            sellTask.setPortfolioLock(portfolioLock);
+            sellTask.setAccountReadLock(accountLock.readLock());
+            sellTask.setAccountWriteLock(accountLock.writeLock());
+            sellTask.setPortfolioReadLock(portfolioLock.readLock());
+            sellTask.setPortfolioWriteLock(portfolioLock.writeLock());
             if (sellTask.execute()) {
                 response = Response.builder().status(success).message(sellSuccessMsg).build();
             } else {
