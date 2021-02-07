@@ -1,5 +1,8 @@
 package org.tasks;
 
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import com.google.gson.Gson;
 import org.Response;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,8 @@ public class TaskHandler {
     private static final String signupFailureMsg = "Signup failed";
     private static final String buyFailureMsg = "Buying failed";
     private static final String sellFailureMsg = "Selling failed";
+    private static final ReadWriteLock accountLock = new ReentrantReadWriteLock();
+    private static final ReadWriteLock portfolioLock = new ReentrantReadWriteLock();
 
     public static String handleMessage(Gson gson, String msg) {
         System.out.println(msg);
@@ -29,6 +34,8 @@ public class TaskHandler {
             System.out.println(invalid);
         } else if (task.getOperation().equals("signup")) {
             SignupTask signupTask = gson.fromJson(task.getMessage(), SignupTask.class);
+            signupTask.setAccountLock(accountLock);
+            signupTask.setPortfolioLock(portfolioLock);
             if (signupTask.execute()) {
                 response = Response.builder().status(success).message(signupSuccessMsg).build();
             } else {
@@ -40,6 +47,8 @@ public class TaskHandler {
             }
         } else if (task.getOperation().equals("login")) {
             LoginTask loginTask = gson.fromJson(task.getMessage(), LoginTask.class);
+            loginTask.setAccountLock(accountLock);
+            loginTask.setPortfolioLock(portfolioLock);
             if (loginTask.execute()) {
                 response = Response.builder().status(success).message(loginSuccessMsg).build();
             } else {
@@ -51,6 +60,8 @@ public class TaskHandler {
             }
         } else if (task.getOperation().equals("buy")) {
             BuyTask buyTask = gson.fromJson(task.getMessage(), BuyTask.class);
+            buyTask.setAccountLock(accountLock);
+            buyTask.setPortfolioLock(portfolioLock);
             if (buyTask.execute()) {
                 response = Response.builder().status(success).message(buySuccessMsg).build();
             } else {
@@ -62,6 +73,8 @@ public class TaskHandler {
             }
         } else if (task.getOperation().equals("sell")) {
             SellTask sellTask = gson.fromJson(task.getMessage(), SellTask.class);
+            sellTask.setAccountLock(accountLock);
+            sellTask.setPortfolioLock(portfolioLock);
             if (sellTask.execute()) {
                 response = Response.builder().status(success).message(sellSuccessMsg).build();
             } else {

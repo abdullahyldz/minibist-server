@@ -1,10 +1,14 @@
 package org.tasks;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.locks.ReadWriteLock;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -19,6 +23,10 @@ public class SignupTask {
     private String firstName;
     private String lastName;
     private String errorMessage = "";
+    @Setter
+    public static ReadWriteLock accountLock;
+    @Setter
+    public static ReadWriteLock portfolioLock;
 
     // JSON parser object to parse read file
     private JSONParser jsonParser = new JSONParser();

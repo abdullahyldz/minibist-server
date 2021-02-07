@@ -1,10 +1,13 @@
 package org.tasks;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.locks.ReadWriteLock;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -20,6 +23,10 @@ public class SellTask {
     private String email;
     private Integer price;
     private String errorMessage = "";
+    @Setter
+    public static ReadWriteLock accountLock;
+    @Setter
+    public static ReadWriteLock portfolioLock;
     // JSON parser object to parse read file
     JSONParser jsonParser = new JSONParser();
     JSONArray portfolios = null;

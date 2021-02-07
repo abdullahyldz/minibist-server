@@ -4,18 +4,25 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.locks.ReadWriteLock;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 public class LoginTask {
 
     private String email;
     private String password;
     private String errorMessage = "";
+    @Setter
+    public static ReadWriteLock accountLock;
+    @Setter
+    public static ReadWriteLock portfolioLock;
 
     public LoginTask(String email, String password) {
         this.email = email;
