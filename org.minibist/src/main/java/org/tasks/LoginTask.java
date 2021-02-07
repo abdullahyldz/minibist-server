@@ -51,12 +51,9 @@ public class LoginTask {
         } catch (FileNotFoundException e) {
             JSONArray accountsArray = new JSONArray();
             try (FileWriter file = new FileWriter("accounts.json")) {
-                JSONObject initializerObject = new JSONObject();
-                initializerObject.put("email", "asdasd@a.com");
-                initializerObject.put("password", "asdasd");
-                accountsArray.add(initializerObject);
                 file.write(accountsArray.toJSONString());
                 file.flush();
+                return false;
             } catch (IOException e2) {
                 e2.printStackTrace();
             }

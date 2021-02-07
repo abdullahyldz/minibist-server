@@ -81,6 +81,8 @@ public class SignupTask {
         JSONObject obj = new JSONObject();
         obj.put("email", this.email);
         obj.put("money", "100");
+        JSONArray arr = new JSONArray();
+        obj.put("stocks", arr);
 
         try (FileReader reader = new FileReader("portfolio.json")) {
             // Read JSON file
