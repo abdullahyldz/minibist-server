@@ -98,7 +98,7 @@ public class SellTask {
                                 obj.put("money", money + this.price * this.amount);
                                 Prices.setPrice(stockName, this.price);
                             } else {
-                                this.errorMessage = "Selling " + this.stockName + "could not be completed";
+                                this.errorMessage = "Selling " + this.stockName + " could not be completed";
                                 return false;
                             }
                         }
@@ -108,8 +108,7 @@ public class SellTask {
                         return false;
                     }
                 } else {
-                    this.errorMessage = "Not sufficient money";
-                    return false;
+                    continue;
                 }
                 if (foundPortfolio)
                     break;
