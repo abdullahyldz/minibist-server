@@ -65,7 +65,11 @@ public class TaskHandler {
             if (sellTask.execute()) {
                 response = Response.builder().status(success).message(sellSuccessMsg).build();
             } else {
-                response = Response.builder().status(failure).message(sellFailureMsg).build();
+                response = Response.builder().status(failure)
+                        .message(sellTask.getErrorMessage() != null && sellTask.getErrorMessage() != ""
+                                ? sellTask.getErrorMessage()
+                                : sellFailureMsg)
+                        .build();
             }
         } else {
             System.out.println("Operation not valid.");
