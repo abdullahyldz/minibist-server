@@ -70,9 +70,9 @@ public class BuyTask {
                 obj = (JSONObject) portfolio;
                 if (obj.get("email").equals(this.email)) {
                     this.errorMessage = "";
-                    Integer money = Integer.parseInt((String) obj.get("money"));
+                    Integer money = ((Long) obj.get("money")).intValue();
                     if (isValid(money, this.price * this.amount)) {
-                        obj.put("money", Integer.toString(money - this.price * this.amount));
+                        obj.put("money", money - this.price * this.amount);
                         JSONArray stocks = (JSONArray) obj.get("stocks");
                         JSONObject stockObj = new JSONObject();
                         boolean found = false;
@@ -105,7 +105,7 @@ public class BuyTask {
                 JSONArray accounts = new JSONArray();
                 JSONObject newAccount = new JSONObject();
                 newAccount.put("email", this.email);
-                newAccount.put("money", "100");
+                newAccount.put("money", 100);
                 newAccount.put("stocks", new JSONArray());
                 accounts.add(newAccount);
                 this.errorMessage = "A problem has occurred. Please try again";
