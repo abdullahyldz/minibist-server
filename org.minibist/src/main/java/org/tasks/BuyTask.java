@@ -73,6 +73,25 @@ public class BuyTask {
                     Integer money = Integer.parseInt((String) obj.get("money"));
                     if (isValid(money, this.price * this.amount)) {
                         obj.put("money", Integer.toString(money - this.price * this.amount));
+                        JSONArray stocks = (JSONArray) obj.get("stocks");
+                        JSONObject stockObj = new JSONObject();
+                        boolean found = false;
+                        for (Object stockObject : stocks) {
+                            stockObj = (JSONObject) stockObject;
+                            if (((String) stockObj.get("name")).equals(this.stockName)) {
+                                stockObj.put("name", this.stockName);
+                                stockObj.put("amount", ((Long) stockObj.get("amount")).intValue() + this.amount);
+                                found = true;
+                                break;
+                            }
+                        }
+                        if (!found) {
+                            stockObj = new JSONObject();
+                            stockObj.put("name", this.stockName);
+                            stockObj.put("amount", this.amount);
+                            stocks.add(stockObj);
+                            obj.put("stocks", stocks);
+                        }
                         savePortfolios();
                         return true;
                     } else {
@@ -87,6 +106,7 @@ public class BuyTask {
                 JSONObject newAccount = new JSONObject();
                 newAccount.put("email", this.email);
                 newAccount.put("money", "100");
+                newAccount.put("stocks", new JSONArray());
                 accounts.add(newAccount);
                 this.errorMessage = "A problem has occurred. Please try again";
                 file.write(accounts.toJSONString());
