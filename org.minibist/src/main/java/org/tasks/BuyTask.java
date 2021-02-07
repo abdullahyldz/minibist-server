@@ -12,6 +12,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.models.Prices;
 
 @RequiredArgsConstructor
 public class BuyTask {
@@ -81,6 +82,7 @@ public class BuyTask {
                             if (((String) stockObj.get("name")).equals(this.stockName)) {
                                 stockObj.put("name", this.stockName);
                                 stockObj.put("amount", ((Long) stockObj.get("amount")).intValue() + this.amount);
+                                Prices.setPrice(stockName, this.price);
                                 found = true;
                                 break;
                             }
@@ -95,7 +97,7 @@ public class BuyTask {
                         savePortfolios();
                         return true;
                     } else {
-                        this.errorMessage = "Not sufficient money";
+                        this.errorMessage = "Not sufficient money OR Cannot buy from this price";
                         return false;
                     }
                 }
@@ -121,7 +123,7 @@ public class BuyTask {
     }
 
     private boolean isValid(Integer money, Integer excess) {
-        return money >= excess;
+        return money >= excess && Prices.isBuyValid(this.price, this.stockName);
     }
 
     public String getErrorMessage() {

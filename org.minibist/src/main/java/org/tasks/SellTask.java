@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.models.Prices;
 
 @RequiredArgsConstructor
 public class SellTask {
@@ -73,11 +74,13 @@ public class SellTask {
                         stockObj = (JSONObject) stockObject;
                         if (((String) stockObj.get("name")).equals(this.stockName)) {
                             found = true;
-                            if (((Long) stockObj.get("amount")).intValue() >= this.amount) {
+                            if (((Long) stockObj.get("amount")).intValue() >= this.amount
+                                    && Prices.isSellValid(this.price, this.stockName)) {
                                 // Valid operation
                                 stockObj.put("name", this.stockName);
                                 stockObj.put("amount", ((Long) stockObj.get("amount")).intValue() - this.amount);
                                 obj.put("money", money + this.price * this.amount);
+                                Prices.setPrice(stockName, this.price);
                             } else {
                                 this.errorMessage = "You don't have that much amount of " + this.stockName;
                                 return false;
@@ -86,6 +89,7 @@ public class SellTask {
                     }
                     if (!found) {
                         this.errorMessage = "You don't own this stock!";
+                        return false;
                     }
                 } else {
                     this.errorMessage = "Not sufficient money";
