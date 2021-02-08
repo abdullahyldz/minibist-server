@@ -24,6 +24,7 @@
     <jacoco.unit-tests.limit.class-complexity>20</jacoco.unit-tests.limit.class-complexity>
     <jacoco.unit-tests.limit.method-complexity>5</jacoco.unit-tests.limit.method-complexity>
   </properties>
+  
   <dependencies>
   
     <dependency>
@@ -71,6 +72,7 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+
             <plugin>
               <groupId>com.heroku.sdk</groupId>
               <artifactId>heroku-maven-plugin</artifactId>
@@ -81,6 +83,7 @@
                 </processTypes>
               </configuration> -->
             </plugin>
+
             <plugin>
               <artifactId>maven-war-plugin</artifactId>
               <version>2.4</version>
@@ -89,13 +92,13 @@
                 <failOnMissingWebXml>false</failOnMissingWebXml>
               </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                  
-                    <!-- <mainClass>org.App</mainClass> -->
+                    <mainClass>org.App</mainClass>
                 </configuration>
             </plugin>
         </plugins>
