@@ -61,6 +61,7 @@
     </dependency>
 
   </dependencies>
+  
 
   <build>
         <plugins>
@@ -77,11 +78,15 @@
               <groupId>com.heroku.sdk</groupId>
               <artifactId>heroku-maven-plugin</artifactId>
               <version>3.0.3</version>
-              <!-- <configuration>
+              <configuration>
                 <processTypes>
                   <web>java $JAVA_OPTS -cp target/classes:target/dependency/* App</web>
                 </processTypes>
-              </configuration> -->
+                <configVars>
+                  <MY_VAR>SomeValue</MY_VAR>
+                  <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
+              </configVars>
+              </configuration>
             </plugin>
 
             <plugin>
