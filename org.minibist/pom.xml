@@ -73,8 +73,9 @@
                           <mainClass>Main</mainClass>
                           <name>main</name>
                       </program>
-            </programs>
+                  </programs>
                 </configuration>
+                
             </plugin>
         </plugins>
     </build>
