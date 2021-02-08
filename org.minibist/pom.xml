@@ -81,13 +81,13 @@
               <configuration>
               <mainClass>org.App</mainClass>
               <appName>minibist</appName>
-                <processTypes>
+                <!-- <processTypes>
                   <web>java $JAVA_OPTS -cp target/classes:target/dependency/* App</web>
                 </processTypes>
                 <configVars>
                   <MY_VAR>SomeValue</MY_VAR>
                   <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
-              </configVars>
+              </configVars> -->
               </configuration>
             </plugin>
             <plugin>

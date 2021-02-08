@@ -111,6 +111,7 @@ public class BuyTask {
                             stockObj.put("amount", this.amount);
                             stocks.add(stockObj);
                             obj.put("stocks", stocks);
+                            Prices.setPrice(stockName, this.price);
                         }
                         savePortfolios();
                         return true;
@@ -137,6 +138,7 @@ public class BuyTask {
                 e2.printStackTrace();
             } finally {
                 portfolioWriteLock.unlock();
+                portfolioReadLock.lock();
             }
         } catch (Exception e) {
             return false;
