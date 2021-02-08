@@ -57,23 +57,6 @@
       <scope>test</scope>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.eclipse.jetty/jetty-server -->
-<dependency>
-    <groupId>org.eclipse.jetty</groupId>
-    <artifactId>jetty-server</artifactId>
-    <version>9.4.35.v20201120</version>
-</dependency>
-
-
-
-    <!-- https://mvnrepository.com/artifact/javax.servlet/servlet-api -->
-    <dependency>
-        <groupId>javax.servlet</groupId>
-        <artifactId>servlet-api</artifactId>
-        <version>2.5</version>
-        <scope>provided</scope>
-    </dependency>
-
   </dependencies>
 
   <build>
@@ -85,20 +68,13 @@
                     <buildDirectory>src</buildDirectory>
                     <source>8</source>
                     <target>8</target>
-
-                    <assembleDirectory>target</assembleDirectory>
                     <programs>
-                        <program>
-                            <mainClass>Main</mainClass>
-                            <name>main</name>
-                        </program>
-                    </programs>
+                      <program>
+                          <mainClass>Main</mainClass>
+                          <name>main</name>
+                      </program>
+            </programs>
                 </configuration>
-                <executions>
-              <execution>
-                  <phase>package</phase><goals><goal>assemble</goal></goals>
-              </execution>
-          </executions>
             </plugin>
         </plugins>
     </build>
