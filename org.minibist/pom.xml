@@ -75,11 +75,11 @@
               <groupId>com.heroku.sdk</groupId>
               <artifactId>heroku-maven-plugin</artifactId>
               <version>3.0.3</version>
-              <configuration>
+              <!-- <configuration>
                 <processTypes>
                   <web>java $JAVA_OPTS -cp target/classes:target/dependency/* App</web>
                 </processTypes>
-              </configuration>
+              </configuration> -->
             </plugin>
             <plugin>
               <artifactId>maven-war-plugin</artifactId>
