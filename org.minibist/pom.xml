@@ -3,6 +3,8 @@
   <groupId>org.minibist</groupId>
   <artifactId>org.minibist</artifactId>
   <version>1.0-SNAPSHOT</version>
+  <packaging>war</packaging>
+
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
@@ -75,9 +77,10 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
-                  <processTypes>
+                <appName>sushi</appName>
+                  <!-- <processTypes>
                     <web>java $JAVA_OPTS -cp target/classes:target/dependency/* App</web>
-                  </processTypes>
+                  </processTypes> -->
                     <mainClass>org.App</mainClass>
                 </configuration>
             </plugin>
@@ -99,7 +102,6 @@
             </plugin>
         </plugins>
     </build> -->
-    <packaging>jar</packaging>
 
   <reporting>
     <plugins>
