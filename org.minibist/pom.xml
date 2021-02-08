@@ -68,12 +68,7 @@
                     <buildDirectory>src</buildDirectory>
                     <source>8</source>
                     <target>8</target>
-                    <programs>
-                      <program>
-                          <mainClass>Main</mainClass>
-                          <name>main</name>
-                      </program>
-                  </programs>
+                    
                 </configuration>
                 
             </plugin>
