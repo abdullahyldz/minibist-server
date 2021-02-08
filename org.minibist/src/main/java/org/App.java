@@ -19,6 +19,7 @@ public final class App {
 
     public static void startConnection() {
         ServerInitializer greetServer = new ServerInitializer(80);
+
         Thread thread = new Thread(greetServer);
         thread.start();
     }
