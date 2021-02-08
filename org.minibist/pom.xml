@@ -75,6 +75,9 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.0.0</version>
                 <configuration>
+                  <processTypes>
+                    <web>java $JAVA_OPTS -cp target/classes:target/dependency/* App</web>
+                  </processTypes>
                     <mainClass>org.App</mainClass>
                 </configuration>
             </plugin>
