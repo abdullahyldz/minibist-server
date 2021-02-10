@@ -64,88 +64,57 @@
   
 
   <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-
-            <plugin>
-              <groupId>com.heroku.sdk</groupId>
-              <artifactId>heroku-maven-plugin</artifactId>
-              <version>3.0.3</version>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
               <configuration>
+                  <source>8</source>
+                  <target>8</target>
+              </configuration>
+          </plugin>
+
+          <plugin>
+            <groupId>com.heroku.sdk</groupId>
+            <artifactId>heroku-maven-plugin</artifactId>
+            <version>3.0.3</version>
+            <configuration>
               <mainClass>org.App</mainClass>
               <appName>minibist</appName>
-                <!-- <processTypes>
-                  <web>java $JAVA_OPTS -cp target/classes:target/dependency/* App</web>
-                </processTypes>
-                <configVars>
-                  <MY_VAR>SomeValue</MY_VAR>
-                  <JAVA_OPTS>-Xss512k -XX:+UseCompressedOops</JAVA_OPTS>
-              </configVars> -->
-              </configuration>
-            </plugin>
-            <plugin>
+            </configuration>
+          </plugin>
+
+          <plugin>
             <!-- Build an executable JAR -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-jar-plugin</artifactId>
             <version>3.1.0</version>
+          </plugin>
+
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
             <configuration>
-                <archive>
-                    <manifest>
-                        <mainClass>org.App</mainClass>
-                    </manifest>
-                </archive>
+              <archive>
+                <manifest>
+                  <mainClass>org.App</mainClass>
+                </manifest>
+              </archive>
+              <descriptorRefs>
+                <descriptorRef>jar-with-dependencies</descriptorRef>
+              </descriptorRefs>
+              <appendAssemblyId>false</appendAssemblyId>
             </configuration>
-        </plugin>
-            <!-- <plugin>
-              <artifactId>maven-war-plugin</artifactId>
-              <version>2.4</version>
-              <configuration>
-                <warSourceDirectory>WebContent</warSourceDirectory>
-                <failOnMissingWebXml>false</failOnMissingWebXml>
-              </configuration>
-            </plugin>
+          </plugin>
 
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <mainClass>org.App</mainClass>
-                </configuration>
-            </plugin> -->
-        </plugins>
+      </plugins>
     </build>
-
-  <!-- <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <buildDirectory>src</buildDirectory>
-                    <source>8</source>
-                    <target>8</target>
-                    <mainClass>org.App</mainClass>
-
-                </configuration>
-            </plugin>
-        </plugins>
-    </build> -->
-
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc-plugin.version}</version>
-      </plugin>
-    </plugins>
-  </reporting>
+    <reporting>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <version>${maven-javadoc-plugin.version}</version>
+        </plugin>
+      </plugins>
+    </reporting>
 </project>
