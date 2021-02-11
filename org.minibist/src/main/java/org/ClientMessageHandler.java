@@ -33,8 +33,10 @@ public class ClientMessageHandler implements Runnable {
         String clientRequest = null;
         try {
             clientRequest = reader.readLine();
-            String serverResponse = TaskHandler.handleMessage(gson, clientRequest);
-            sendReply(serverResponse);
+            if (clientRequest != null) {
+                String serverResponse = TaskHandler.handleMessage(gson, clientRequest);
+                sendReply(serverResponse);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

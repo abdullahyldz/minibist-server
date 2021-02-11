@@ -26,7 +26,11 @@ public class TaskHandler {
     private static final ReadWriteLock portfolioLock = new ReentrantReadWriteLock();
 
     public static String handleMessage(Gson gson, String msg) {
-        System.out.println(msg);
+        if (msg == null || msg.equals("")) {
+            return "";
+        }
+        System.out.println("Client message: " + msg);
+
         Task task = gson.fromJson(msg, Task.class);
         Response response = null;
 

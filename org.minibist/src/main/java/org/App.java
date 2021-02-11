@@ -4,6 +4,9 @@ package org;
  * Hello world!
  */
 public final class App {
+
+    public static Integer PORT = 8080;
+
     private App() {
     }
 
@@ -18,7 +21,7 @@ public final class App {
     }
 
     public static void startConnection() {
-        ServerInitializer greetServer = new ServerInitializer(8080);
+        ServerInitializer greetServer = new ServerInitializer(PORT);
 
         Thread thread = new Thread(greetServer);
         thread.start();
