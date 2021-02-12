@@ -10,28 +10,9 @@ public class Prices {
     private static Integer TOASO = 38;
     private static Integer EREGL = 14;
     private static Integer ARCLK = 35;
+    public final static String[] stocks = { "TOASO", "GARAN", "THYAO", "ARCLK", "EREGL" };
 
     public static void setPrice(String stockName, Integer price) {
-        switch (stockName) {
-            case "GARAN":
-                Prices.GARAN = price;
-                break;
-            case "TOASO":
-                Prices.TOASO = price;
-                break;
-            case "THYAO":
-                Prices.THYAO = price;
-                break;
-            case "ARCLK":
-                Prices.ARCLK = price;
-                break;
-            case "EREGL":
-                Prices.EREGL = price;
-                break;
-
-            default:
-                break;
-        }
         System.out.println("TOASO price: " + getPrice("TOASO"));
         System.out.println("GARAN price: " + getPrice("GARAN"));
         System.out.println("THYAO price: " + getPrice("THYAO"));

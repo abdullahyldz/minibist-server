@@ -8,8 +8,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReadWriteLock;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -96,7 +94,6 @@ public class SellTask {
                                 stockObj.put("name", this.stockName);
                                 stockObj.put("amount", ((Long) stockObj.get("amount")).intValue() - this.amount);
                                 obj.put("money", money + this.price * this.amount);
-                                Prices.setPrice(stockName, this.price);
                             } else {
                                 this.errorMessage = "Selling " + this.stockName + " could not be completed";
                                 return false;

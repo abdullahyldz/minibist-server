@@ -5,6 +5,9 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.google.gson.Gson;
 import org.Response;
+import org.json.simple.JSONObject;
+import org.models.Prices;
+
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
@@ -36,6 +39,14 @@ public class TaskHandler {
 
         if (task.getOperation() == null || task.getMessage() == null) {
             System.out.println(invalid);
+        } else if (task.getOperation().equals("prices")) {
+            JSONObject obj = new JSONObject();
+            for (String stockName : Prices.stocks) {
+                obj.put(stockName, Prices.getPrice(stockName));
+            }
+
+            response = Response.builder().status(success).message(obj.toString()).build();
+
         } else if (task.getOperation().equals("signup")) {
             SignupTask signupTask = gson.fromJson(task.getMessage(), SignupTask.class);
             signupTask.setAccountReadLock(accountLock.readLock());

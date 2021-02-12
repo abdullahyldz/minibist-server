@@ -100,7 +100,6 @@ public class BuyTask {
                             if (((String) stockObj.get("name")).equals(this.stockName)) {
                                 stockObj.put("name", this.stockName);
                                 stockObj.put("amount", ((Long) stockObj.get("amount")).intValue() + this.amount);
-                                Prices.setPrice(stockName, this.price);
                                 found = true;
                                 break;
                             }
@@ -111,7 +110,6 @@ public class BuyTask {
                             stockObj.put("amount", this.amount);
                             stocks.add(stockObj);
                             obj.put("stocks", stocks);
-                            Prices.setPrice(stockName, this.price);
                         }
                         savePortfolios();
                         return true;
