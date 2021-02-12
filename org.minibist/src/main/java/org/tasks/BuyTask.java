@@ -90,7 +90,7 @@ public class BuyTask {
                 if (obj.get("email").equals(this.email)) {
                     this.errorMessage = "";
                     Integer money = ((Long) obj.get("money")).intValue();
-                    if (isValid(money, this.price * this.amount)) {
+                    if (isValid(money, this.price * this.amount) && isBuyValid(money, this.price * this.amount)) {
                         obj.put("money", money - this.price * this.amount);
                         JSONArray stocks = (JSONArray) obj.get("stocks");
                         JSONObject stockObj = new JSONObject();
@@ -113,8 +113,11 @@ public class BuyTask {
                         }
                         savePortfolios();
                         return true;
+                    } else if (isBuyValid(money, this.price * this.amount)) {
+                        this.errorMessage = "Not sufficient money"; // OR Cannot buy from this price
+                        return false;
                     } else {
-                        this.errorMessage = "Not sufficient money OR Cannot buy from this price";
+                        this.errorMessage = "Cannot buy from this price";
                         return false;
                     }
                 }
@@ -147,7 +150,11 @@ public class BuyTask {
     }
 
     private boolean isValid(Integer money, Integer excess) {
-        return money >= excess && Prices.isBuyValid(this.price, this.stockName);
+        return money >= excess;
+    }
+
+    private boolean isBuyValid(Integer money, Integer excess) {
+        return Prices.isBuyValid(this.price, this.stockName);
     }
 
     public String getErrorMessage() {
