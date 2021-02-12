@@ -7,9 +7,9 @@ public class Prices {
 
     private static Integer GARAN = 10;
     private static Integer THYAO = 12;
-    private static Integer TOASO = 38;
+    private static Integer TOASO = 36;
     private static Integer EREGL = 14;
-    private static Integer ARCLK = 35;
+    private static Integer ARCLK = 34;
     public final static String[] stocks = { "TOASO", "GARAN", "THYAO", "ARCLK", "EREGL" };
 
     public static void setPrice(String stockName, Integer price) {
